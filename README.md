@@ -3,7 +3,10 @@
 ## Toolchain
 
 ```
-sudo apt install -y checkinstall build-essential autoconf automake cmake unzip pkg-config gcc-arm-linux-gnueabihf g++-arm-linux-gnueabihf gfortran-arm-linux-gnueabihf libgfortran3-armhf-cross gcc rsync
+sudo apt install -y checkinstall build-essential autoconf \
+automake cmake unzip pkg-config gcc-arm-linux-gnueabihf \
+g++-arm-linux-gnueabihf gfortran-arm-linux-gnueabihf \
+libgfortran3-armhf-cross gcc rsync
 
 cd ~
 mkdir raspberry
@@ -29,7 +32,11 @@ cd OpenBLAS/
 
 ```
 tc_prefix="arm-linux-gnueabihf-"; rArch="ARMV7";
-make CC=${tc_prefix}gcc RANLIB=${tc_prefix}ranlib  AR=${tc_prefix}gcc-ar FC=${tc_prefix}gfortran HOSTCC=gcc TARGET=${rArch} NUM_THREADS=3
+make CC=${tc_prefix}gcc \
+RANLIB=${tc_prefix}ranlib  \
+AR=${tc_prefix}gcc-ar \
+FC=${tc_prefix}gfortran \
+HOSTCC=gcc TARGET=${rArch} NUM_THREADS=3
 
 ```
 
