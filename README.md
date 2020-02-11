@@ -1,4 +1,4 @@
-# asd
+# DEBIAN 10, RaspberryPi 3b+, ARMv7
 
 ## Toolchain
 
