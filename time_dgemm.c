@@ -13,7 +13,7 @@ int main(int argc, char* argv[])
   int n = 1000;
   int k = 1000;
   
-  printf("test! %d \n",openblas_get_num_threads());
+  printf("openblas_get_num_threads =  %d \n",openblas_get_num_threads());
 
   int sizeofa = m * k;
   int sizeofb = k * n;
