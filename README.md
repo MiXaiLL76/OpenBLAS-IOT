@@ -46,6 +46,7 @@ cd OpenBLAS
 ```
 tc_prefix="arm-linux-gnueabihf-"; rArch="ARMV7";
 replace "vfpv3" "neon-vfpv4" Makefile.arm
+replace "armv7-a" "armv8-a -mtune=cortex-a53" Makefile.arm
 
 make CC=${tc_prefix}gcc \
 RANLIB=${tc_prefix}ranlib  \
