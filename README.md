@@ -4,6 +4,11 @@
 
 ## Toolchain
 
+https://habr.com/ru/post/461693/
+https://github.com/raspberrypi/userland
+https://github.com/openfans-community-offical/Debian-Pi-Aarch64/
+https://www.raspberrypi.org/forums/viewtopic.php?f=63&t=257767&hilit=arm64%3D1
+
 ```
 sudo apt install -y checkinstall build-essential autoconf \
 automake cmake unzip pkg-config gcc-arm-linux-gnueabihf \
@@ -14,16 +19,6 @@ cd ~
 mkdir raspberry
 cd ~/raspberry
 ```
-## Дополнительно
-
-```
-# Функция замены в файле
-replace(){
-find=$1
-rep=$2
-file=$3
-sed -i "s@${find}@${rep}@" ${file}
-}
 
 ```
 ## Raspberry Pi
@@ -32,67 +27,32 @@ sed -i "s@${find}@${rep}@" ${file}
 pi@raspberrypi:~ $ sudo apt install -y libgfortran3 rsync
 ```
 
-## Setup
-
-Клонировать репозиторий OpenBLAS
-
-``` 
-git clone https://github.com/xianyi/OpenBLAS.git
-cd OpenBLAS
-```
-
-Теперь нужно сконфигурировать и скомпилировать OpenBLAS. Это займет несколько минут.
+## Компиляция пакета
 
 ```
-tc_prefix="arm-linux-gnueabihf-"; rArch="ARMV7";
-replace "vfpv3" "neon-vfpv4" Makefile.arm
-replace "armv7-a" "armv8-a -mtune=cortex-a53" Makefile.arm
-
-make CC=${tc_prefix}gcc \
-RANLIB=${tc_prefix}ranlib  \
-AR=${tc_prefix}gcc-ar \
-FC=${tc_prefix}gfortran \
-HOSTCC=gcc TARGET=${rArch} NUM_THREADS=3
-
+sudo bash build.bash
 ```
 
-По умолчанию OpenBLAS устанавливается в /opt/OpenBLAS, что неудобно для обычного использования. Имхо
+## Сборка пакета OpenBLAS
 
-Так же при установке в таком формате для RPI что то происходит с LAPACKE и приходится немного подправить конфиг.
-
-А еще при установке часто ругается на папку */usr/local/lib/cmake/openblas/*. Предлагаю её *удалить*, а потом создать.
 
 ```
-replace "/opt/OpenBLAS" "/usr/local" Makefile.install
-replace "NO_LAPACKE" "NO_LAPACKE_OUT" Makefile.install
-
-OpenBLASver=`cat Makefile.rule | grep VERSION | sed "s@VERSION = @@" | sed "s@.dev@@"`
-sudo rm -rf /usr/local/lib/cmake/openblas/
-sudo mkdir -p -m777 /usr/local/lib/cmake/openblas/
-
-```
-
-Сборка пакета OpenBLAS
-
-```
-sudo checkinstall -D \
---install=no \
---strip=no \
---pkgversion=${OpenBLASver} \
---pkgrelease="dev" \
---pkgname=libopenblas \
---pkgarch=armhf \
---pkgsource="http://github.com/xianyi/OpenBLAS" \
---maintainer="MiXaiLL76" --default
-
+cp deb.bash ~/raspberry/OpenBLAS
+cd ~/raspberry/OpenBLAS
+sudo bash deb.bash
 ```
 
 Установка OpenBLAS
 
 ```
 deviceIP="192.168.1.101"
-scp libopenblas_${OpenBLASver}-dev_armhf.deb pi@${deviceIP}:~
-ssh pi@${deviceIP} "sudo dpkg -i ~/libopenblas_${OpenBLASver}-dev_armhf.deb"
+arch="armhf"
+pack_name="libopenblas"
+
+version=`cat Makefile.rule | grep VERSION | sed "s@VERSION = @@" | sed "s@.dev@@"`
+
+scp ${pack_name}_${arch}_${version}.dev.deb pi@${deviceIP}:~
+ssh pi@${deviceIP} "sudo dpkg -i ~/${pack_name}_${arch}_${version}.dev.deb"
 
 ```
 
@@ -100,12 +60,12 @@ ssh pi@${deviceIP} "sudo dpkg -i ~/libopenblas_${OpenBLASver}-dev_armhf.deb"
 
 ```
 sudo ldconfig
-wget https://raw.githubusercontent.com/MiXaiLL76/OpenBLAS_RaspberryPi/master/time_dgemm.c
+wget https://raw.githubusercontent.com/MiXaiLL76/OpenBLAS_IOT/rpi3b_armv8_kernal/time_dgemm.c
 scp time_dgemm.c pi@${deviceIP}:~
 ssh pi@${deviceIP} "gcc time_dgemm.c -o out -lopenblas"
 ssh pi@${deviceIP} "~/out"
 ```
-Вывод выглядит не плохо. Ограничил 3 ядрами.
+Вывод выглядит не плохо. 
 
 ```
 openblas_get_num_threads =  3
