@@ -20,7 +20,7 @@ mkdir raspberry
 cd ~/raspberry
 ```
 
-```
+
 ## Raspberry Pi
 
 ```
@@ -42,7 +42,7 @@ cd ~/raspberry/OpenBLAS
 sudo bash deb.bash
 ```
 
-Установка OpenBLAS
+## Установка OpenBLAS
 
 ```
 deviceIP="192.168.1.101"
@@ -56,7 +56,7 @@ ssh pi@${deviceIP} "sudo dpkg -i ~/${pack_name}_${arch}_${version}.dev.deb"
 
 ```
 
-Проверка
+## Проверка
 
 ```
 sudo ldconfig
