@@ -2,12 +2,17 @@
 
 ## Скомпилированную библиотеку, готовую к установке можно скачать в **[релизах](https://github.com/MiXaiLL76/OpenBLAS_RaspberryPi/releases)**
 
-## Toolchain
+## Просто информация
 
-https://habr.com/ru/post/461693/
-https://github.com/raspberrypi/userland
-https://github.com/openfans-community-offical/Debian-Pi-Aarch64/
-https://www.raspberrypi.org/forums/viewtopic.php?f=63&t=257767&hilit=arm64%3D1
+[Тут установка opencv](https://habr.com/ru/post/461693/)
+
+[Тут доп. либы для малинки](https://github.com/raspberrypi/userland)
+
+[Тут глюченый но всё таки aarch64 debian](https://github.com/openfans-community-offical/Debian-Pi-Aarch64/)
+
+[Тут инфа как включить aarch64 kernal](https://www.raspberrypi.org/forums/viewtopic.php?f=63&t=257767&hilit=arm64%3D1)
+
+## Toolchain
 
 ```
 sudo apt install -y checkinstall build-essential autoconf \
