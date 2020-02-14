@@ -70,10 +70,12 @@ scp time_dgemm.c pi@${deviceIP}:~
 ssh pi@${deviceIP} "gcc time_dgemm.c -o out -lopenblas"
 ssh pi@${deviceIP} "~/out"
 ```
-Вывод выглядит не плохо. 
+
+Вывод выглядит не плохо. На все 4 ядра.
 
 ```
-openblas_get_num_threads =  3
+pi@raspberrypi:~ $ OMP_NUM_THREADS=4 ./a.out
+openblas_get_num_threads =  4
 m=1000,n=1000,k=1000,alpha=1.200000,beta=0.001000,sizeofc=1000000
-1000x1000x1000  0.359737 s      5559.617165 MFLOPS
+1000x1000x1000  0.316138 s      6326.351150 MFLOPS
 ```
