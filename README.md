@@ -15,10 +15,10 @@
 ## Toolchain
 
 ```
-sudo apt install -y checkinstall build-essential autoconf \
+sudo apt install -y build-essential autoconf \
 automake cmake unzip pkg-config gcc-arm-linux-gnueabihf \
 g++-arm-linux-gnueabihf gfortran-arm-linux-gnueabihf \
-libgfortran3-armhf-cross gcc rsync
+libgfortran5-armhf-cross gcc
 
 cd ~
 mkdir raspberry
@@ -29,7 +29,7 @@ cd ~/raspberry
 ## Raspberry Pi
 
 ```
-pi@raspberrypi:~ $ sudo apt install -y libgfortran3 rsync
+pi@raspberrypi:~ $ sudo apt install -y libgfortran5
 ```
 
 ## Компиляция пакета
