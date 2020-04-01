@@ -31,7 +31,7 @@ ${su} update-alternatives --set fakeroot /usr/bin/${new_fakeroot}
 
 # Название пакета
 pack_name="libopenblas"
-arch="armhf"
+arch="arm64"
 
 # Тут можно почитать о такого рода сборке
 info="Build with [https://habr.com/ru/post/78094]"
@@ -54,9 +54,12 @@ ${su} rm -rf ${root}
 mkdir -p ${root}
 mkdir -p ${root}/DEBIAN
 
+doc=${root}/usr/share/doc/${pack_name}
+mkdir -p ${doc}
+
 make install PREFIX=${root}/usr/local
 
-sizebyte=$(stat libopenblas_armv7p-r${version}.dev.a -c %s)
+sizebyte=$(stat libopenblas*.dev.a -c %s)
 let "sizekb = sizebyte / 1024 * 2"
 
 # Сборка контрольных файлов
@@ -66,7 +69,7 @@ let "sizekb = sizebyte / 1024 * 2"
   echo "Maintainer: MiXaiLL76 <mike.milos@yandex.ru>"
   echo "Architecture: ${arch}"
   echo "Section: misc"
-  echo "Description: OpenBLAS builded for RPI3b+"
+  echo "Description: OpenBLAS builded for RPI4b"
   echo "Installed-Size: ${sizekb}"
   echo "Priority: optional"
   echo "Origin: MiXaiLL76 brain"
