@@ -17,7 +17,7 @@ mkdir -p -m777 raspberry
 cd ~/raspberry
 
 git clone https://github.com/xianyi/OpenBLAS.git
-cd OpenBLAS
+cd ~/raspberry/OpenBLAS
 
 tc_prefix="aarch64-linux-gnu-"; rArch="ARMV8";
 

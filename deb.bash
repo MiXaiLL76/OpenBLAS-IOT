@@ -1,5 +1,14 @@
 #!/bin/bash
 
+start_dir=$(pwd)
+
+# Название пакета
+pack_name="libopenblas"
+arch="arm64"
+
+# Путь к сборке пакета
+cd ~/raspberry/OpenBLAS
+
 su="sudo"
 apt_tool="${su} apt"
 
@@ -28,10 +37,6 @@ dpkg_test fakeroot
 new_fakeroot="fakeroot-tcp"
 ${su} update-alternatives --set fakeroot /usr/bin/${new_fakeroot}
 ### Для сборки пакета
-
-# Название пакета
-pack_name="libopenblas"
-arch="arm64"
 
 # Тут можно почитать о такого рода сборке
 info="Build with [https://habr.com/ru/post/78094]"
@@ -69,6 +74,7 @@ let "sizekb = sizebyte / 1024 * 2"
   echo "Maintainer: MiXaiLL76 <mike.milos@yandex.ru>"
   echo "Architecture: ${arch}"
   echo "Section: misc"
+  echo "Depends: libgfortran5"                         # ЗАВИСИМОСТИ!
   echo "Description: OpenBLAS builded for RPI4b"
   echo "Installed-Size: ${sizekb}"
   echo "Priority: optional"
@@ -96,8 +102,10 @@ chmod 775 -R ${root}
 
 # Собираем пакет
 ${new_fakeroot} dpkg-deb --build ${root}
+
 # Копируем пакет обратно в текущую директорию
 mv ${root}.deb ${pack_name}_${arch}_${version}.dev.deb
+cp ${pwd_root}/${pack_name}_${arch}_${version}.dev.deb ${start_dir}/
 
 # Вывод информации
 echo ""
