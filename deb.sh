@@ -5,9 +5,11 @@ pack_name="libopenblas"
 arch="_ARCH"
 
 
-if [ "$(arch)" != 'ARMV8' ]; then
+if [ ${arch} != 'ARMV8' ]; then
+  echo ${arch}, "ARM32"
   arch="armhf"
 else
+  echo ${arch}, "ARM64"
   arch="arm64"
 fi
 
