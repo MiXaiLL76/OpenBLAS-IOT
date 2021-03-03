@@ -1,0 +1,16 @@
+version: '3.1'
+
+services:
+  openblas:
+    image: "iot/openblas"
+    build:
+      context: .
+      args:
+        # TC_PREFIX: 'arm-linux-gnueabihf-'
+        # ARCH: ARMV7
+        TC_PREFIX: 'aarch64-linux-gnu-'
+        ARCH: ARMV8
+    volumes:
+      - ./data:/data
+    entrypoint: >
+      ./deb.sh

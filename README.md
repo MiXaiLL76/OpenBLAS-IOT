@@ -2,43 +2,18 @@
 
 ## Скомпилированную библиотеку, готовую к установке можно скачать в **[релизах](https://github.com/MiXaiLL76/OpenBLAS_RaspberryPi/releases)**
 
-## Просто информация
-
-[Тут установка opencv](https://habr.com/ru/post/461693/)
-
-[Тут доп. либы для малинки](https://github.com/raspberrypi/userland)
-
-[Тут глюченый но всё таки aarch64 debian](https://github.com/openfans-community-offical/Debian-Pi-Aarch64/)
-
-[Тут инфа как включить aarch64 kernal](https://www.raspberrypi.org/forums/viewtopic.php?f=63&t=257767&hilit=arm64%3D1)
-
-## Raspberry Pi
-
-```
-ubuntu@ubuntu:~$ sudo apt install -y gcc libgfortran5
-```
-
 ## Компиляция пакета
+```
+docker-compose build
+```
 
-```
-sudo bash build.bash
-```
-1. Создает папку `raspberry/OpenBLAS`
-2. Скачивает нужные библиотеки
-3. Делает сборку библиоткеи
+1. Скачивает нужные библиотеки в образе
+2. Делает сборку библиоткеи в образе
 
 
 ## Сборка deb пакета OpenBLAS
-
-
 ```
-sudo bash deb.bash
-```
-
-## Установка OpenBLAS
-
-```
-bash install.bash 192.168.1.5
+docker-compose up
 ```
 
 ## Проверка

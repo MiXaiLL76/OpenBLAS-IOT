@@ -1,42 +1,22 @@
 #!/bin/bash
 
-start_dir=$(pwd)
-
 # Название пакета
 pack_name="libopenblas"
-arch="arm64"
+arch="_ARCH"
 
-# Путь к сборке пакета
-cd ~/raspberry/OpenBLAS
 
-su="sudo"
-apt_tool="${su} apt"
+if [ "$(arch)" != 'ARMV8' ]; then
+  arch="armhf"
+else
+  arch="arm64"
+fi
 
 indexOf(){
-# indexOf "asdsad" "a"
   echo "$1" "$2" | awk '{print index($1,$2)}' 
 }
 
-dpkg_test(){
-  find_str="no packages found"
-  line=`dpkg -l $1 | grep $1`
-
-  if [ "$(echo ${line} | awk '{print length}')" == '0' ]; then
-      ${apt_tool} update
-      ${apt_tool} install $1 -y
-  fi
-}
-
-### Обновление пакетов, нужных для установки
-dpkg_test debconf
-dpkg_test debhelper
-dpkg_test lintian
-dpkg_test bc
-dpkg_test fakeroot
-
 new_fakeroot="fakeroot-tcp"
-${su} update-alternatives --set fakeroot /usr/bin/${new_fakeroot}
-### Для сборки пакета
+update-alternatives --set fakeroot /usr/bin/${new_fakeroot}
 
 # Тут можно почитать о такого рода сборке
 info="Build with [https://habr.com/ru/post/78094]"
@@ -51,9 +31,6 @@ pwd_root=$(pwd)
 
 # Директория с файлами для сборки пакета
 root="${HOME}/${pack_name}_deb"
-
-# Удаление предыдущей сборки
-${su} rm -rf ${root}
 
 # Создание папок
 mkdir -p ${root}
@@ -75,7 +52,7 @@ let "sizekb = sizebyte / 1024 * 2"
   echo "Architecture: ${arch}"
   echo "Section: misc"
   echo "Depends: libgfortran5"                         # ЗАВИСИМОСТИ!
-  echo "Description: OpenBLAS builded for RPI4b"
+  echo "Description: OpenBLAS auto builded"
   echo "Installed-Size: ${sizekb}"
   echo "Priority: optional"
   echo "Origin: MiXaiLL76 brain"
@@ -86,6 +63,7 @@ let "sizekb = sizebyte / 1024 * 2"
   echo "Телефон: +79201393940"
   echo "Почта: mike.milos@yandex.ru"
 } > ${root}/DEBIAN/copyright
+
 cp ${root}/DEBIAN/copyright ${doc}/copyright
 
 {
@@ -105,7 +83,7 @@ ${new_fakeroot} dpkg-deb --build ${root}
 
 # Копируем пакет обратно в текущую директорию
 mv ${root}.deb ${pack_name}_${arch}_${version}.dev.deb
-cp ${pwd_root}/${pack_name}_${arch}_${version}.dev.deb ${start_dir}/
+cp ${pwd_root}/${pack_name}_${arch}_${version}.dev.deb /data
 
 # Вывод информации
 echo ""
@@ -115,5 +93,5 @@ echo ""
 echo "This root is: ${pwd_root}"
 echo "Created package is: ${pack_name}_${arch}_${version}.dev.deb"
 
-${su} rm -rf ${root}
+rm -rf ${root}
 
